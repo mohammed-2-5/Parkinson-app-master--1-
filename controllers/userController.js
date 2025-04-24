@@ -45,7 +45,7 @@ const createUser = async (req, res) => {
       },
     });
 
-    const verificationLink = `http://localhost:5000/api/users/verify-email/${verificationToken}`;
+    const verificationLink = `https://zealous-eight-crayfish.glitch.me/api/users/verify-email/${verificationToken}`;
 
     await transporter.sendMail({
       from: process.env.EMAIL,
