@@ -1,15 +1,24 @@
 const express = require("express");
 const router = express.Router();
-const {
-  createPrediction,
-  getAllPredictions,
-  getPredictionsByUser,
-  getPredictionsByResult,
-} = require("../controllers/predictionController");
+const multer = require("multer");
+const path = require("path");
+const { createPrediction } = require("../controllers/predictionController");
 
-router.post("/", createPrediction); // إضافة تنبؤ
-router.get("/", getAllPredictions); // كل التنبؤات
-router.get("/user/:userId", getPredictionsByUser); // تنبؤات مستخدم معين
-router.get("/result/:result", getPredictionsByResult); // تنبؤات حسب النتيجة
+// إعداد التخزين للصور
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/");
+  },
+  filename: function (req, file, cb) {
+    const uniqueName = Date.now() + "-" + file.originalname;
+    cb(null, uniqueName);
+  },
+});
+
+// إعداد رفع الملفات (يقبل صورة واحدة باسم 'image')
+const upload = multer({ storage });
+
+// الراوت لإنشاء التنبؤ
+router.post("/predict", upload.single("image"), createPrediction);
 
 module.exports = router;

@@ -1,13 +1,33 @@
 const mongoose = require("mongoose");
 
-const predictionSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  inputType: { type: String, enum: ["symptoms", "image"], required: true },
-  symptoms: { type: String, default: null },
-  image: { type: String, default: null },
-  predictedResult: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now },
-});
+// تعريف الموديل للأعراض
+const predictionSchema = new mongoose.Schema(
+  {
+    predictedResult: {
+      type: String,
+      required: true,
+    },
+    symptoms: [
+      {
+        _id: {
+          type: String, // لأن الأعراض سيتم تحديدها من قبل النظام
+          required: true,
+        },
+        name: {
+          type: String,
+          required: true,
+        },
+        value: {
+          type: mongoose.Schema.Types.Mixed, // يمكن أن يكون true/false أو قيمة عشرية أو عدد صحيح
+          required: true,
+        },
+      },
+    ],
+  },
+  {
+    timestamps: true, // إضافة الوقت
+  }
+);
 
 const Prediction = mongoose.model("Prediction", predictionSchema);
 module.exports = Prediction;

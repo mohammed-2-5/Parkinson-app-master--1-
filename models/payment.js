@@ -20,7 +20,7 @@ const paymentSchema = new mongoose.Schema(
     amount: { type: Number, required: true },
     currency: { type: String, required: true },
     status: { type: String, default: "Pending" },
-    stripePaymentIntentId: { type: String, required: true }, // تأكد من إضافة هذا الحقل
+    stripePaymentIntentId: { type: String, required: false }, // خليها مش required
     paidAt: { type: Date, default: null },
   },
   { timestamps: true }
